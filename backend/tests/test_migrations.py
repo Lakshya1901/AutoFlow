@@ -13,7 +13,9 @@ BACKEND = Path(__file__).resolve().parents[1]
 
 
 def _alembic(*args: str, db_url: str) -> subprocess.CompletedProcess[str]:
-    env = {**os.environ, "DATABASE_URL": db_url}
+    # The subprocess doesn't inherit pytest's pythonpath; point it at src explicitly
+    pythonpath = os.pathsep.join(filter(None, [str(BACKEND / "src"), os.environ.get("PYTHONPATH")]))
+    env = {**os.environ, "DATABASE_URL": db_url, "PYTHONPATH": pythonpath}
     return subprocess.run(
         [sys.executable, "-m", "alembic", *args],
         cwd=BACKEND, env=env, capture_output=True, text=True, check=False,
