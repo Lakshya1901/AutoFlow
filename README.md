@@ -54,7 +54,7 @@ API docs: <http://localhost:8000/docs>
 # backend (Python 3.13)
 cd backend
 uv sync --extra dev
-uv run pytest                     # 33 tests; SQLite in-memory, no services needed
+uv run pytest                     # 34 tests; SQLite in-memory, real Chromium if installed
 uv run ruff check src tests
 uv run alembic upgrade head       # migrations live in alembic/versions
 
