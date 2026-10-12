@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "AutoFlow Recorder",
+  "version": "0.1.0",
+  "description": "Record browser workflows with AutoFlow — AI Workflow Automation Platform",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "downloads",
+    "webNavigation",
+    "tabs",
+    "clipboardRead"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/recorder.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "action": {
+    "default_popup": "popup/index.html",
+    "default_title": "AutoFlow Recorder",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["popup/*", "icons/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

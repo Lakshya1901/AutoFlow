@@ -1,0 +1,277 @@
+@import "tailwindcss";
+
+/* ─── AutoFlow Design System ─────────────────────────────────────────────── */
+
+@theme {
+  /* Brand colors */
+  --color-brand-50: oklch(97% 0.02 265);
+  --color-brand-100: oklch(93% 0.05 265);
+  --color-brand-200: oklch(87% 0.10 265);
+  --color-brand-300: oklch(78% 0.16 265);
+  --color-brand-400: oklch(68% 0.22 265);
+  --color-brand-500: oklch(58% 0.26 265);
+  --color-brand-600: oklch(50% 0.26 265);
+  --color-brand-700: oklch(42% 0.22 265);
+  --color-brand-800: oklch(34% 0.18 265);
+  --color-brand-900: oklch(26% 0.12 265);
+  --color-brand-950: oklch(18% 0.08 265);
+
+  /* Accent - electric cyan */
+  --color-accent-400: oklch(80% 0.20 195);
+  --color-accent-500: oklch(72% 0.22 195);
+  --color-accent-600: oklch(62% 0.22 195);
+
+  /* Success */
+  --color-success-400: oklch(78% 0.18 145);
+  --color-success-500: oklch(68% 0.20 145);
+
+  /* Warning */
+  --color-warning-400: oklch(82% 0.18 80);
+  --color-warning-500: oklch(74% 0.20 80);
+
+  /* Danger */
+  --color-danger-400: oklch(72% 0.22 25);
+  --color-danger-500: oklch(62% 0.24 25);
+
+  /* Surface */
+  --color-surface-50: oklch(99% 0.005 265);
+  --color-surface-100: oklch(97% 0.008 265);
+  --color-surface-800: oklch(20% 0.020 265);
+  --color-surface-900: oklch(14% 0.015 265);
+  --color-surface-950: oklch(10% 0.012 265);
+
+  /* Typography */
+  --font-sans: "Inter", "system-ui", "-apple-system", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  /* Shadows */
+  --shadow-glow: 0 0 20px oklch(58% 0.26 265 / 0.3);
+  --shadow-glow-accent: 0 0 20px oklch(72% 0.22 195 / 0.3);
+}
+
+/* ─── Base Reset ─────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  background-color: oklch(10% 0.012 265);
+  color: oklch(97% 0.005 265);
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ─── Typography ─────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Scrollbars ─────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: oklch(14% 0.015 265);
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(30% 0.020 265);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(40% 0.025 265);
+}
+
+/* ─── Glassmorphism Components ───────────────────────────────────────────── */
+
+.glass {
+  background: oklch(20% 0.020 265 / 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid oklch(40% 0.030 265 / 0.2);
+}
+
+.glass-card {
+  background: oklch(16% 0.018 265 / 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid oklch(35% 0.025 265 / 0.25);
+  border-radius: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.glass-card:hover {
+  border-color: oklch(58% 0.26 265 / 0.4);
+  box-shadow: 0 4px 24px oklch(58% 0.26 265 / 0.1);
+}
+
+/* ─── Brand Gradient ─────────────────────────────────────────────────────── */
+
+.gradient-text {
+  background: linear-gradient(135deg, oklch(72% 0.22 195), oklch(58% 0.26 265), oklch(68% 0.22 310));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, oklch(58% 0.26 265 / 0.15), oklch(72% 0.22 195 / 0.10));
+}
+
+/* ─── Status Indicators ──────────────────────────────────────────────────── */
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-dot.active { background: oklch(68% 0.20 145); animation: pulse-green 2s ease-in-out infinite; }
+.status-dot.recording { background: oklch(62% 0.24 25); animation: pulse-red 1s ease-in-out infinite; }
+.status-dot.processing { background: oklch(74% 0.20 80); animation: pulse-yellow 1.5s ease-in-out infinite; }
+.status-dot.completed { background: oklch(68% 0.20 145); }
+.status-dot.failed { background: oklch(62% 0.24 25); }
+.status-dot.draft { background: oklch(60% 0.02 265); }
+
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 oklch(68% 0.20 145 / 0.4); }
+  50% { opacity: 0.8; box-shadow: 0 0 0 6px oklch(68% 0.20 145 / 0); }
+}
+
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 oklch(62% 0.24 25 / 0.6); }
+  50% { opacity: 0.8; box-shadow: 0 0 0 8px oklch(62% 0.24 25 / 0); }
+}
+
+@keyframes pulse-yellow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ─── Workflow Editor Canvas ─────────────────────────────────────────────── */
+
+.react-flow__background {
+  background-color: oklch(10% 0.012 265) !important;
+}
+
+.react-flow__edge-path {
+  stroke: oklch(58% 0.26 265 / 0.6) !important;
+  stroke-width: 2 !important;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: oklch(72% 0.22 195) !important;
+}
+
+.react-flow__node {
+  border-radius: 10px !important;
+}
+
+.react-flow__controls {
+  background: oklch(16% 0.018 265 / 0.9) !important;
+  border: 1px solid oklch(35% 0.025 265 / 0.25) !important;
+  border-radius: 8px !important;
+}
+
+.react-flow__controls button {
+  background: transparent !important;
+  border-color: oklch(35% 0.025 265 / 0.25) !important;
+  color: oklch(80% 0.010 265) !important;
+}
+
+.react-flow__controls button:hover {
+  background: oklch(25% 0.020 265 / 0.8) !important;
+}
+
+.react-flow__minimap {
+  background: oklch(16% 0.018 265 / 0.9) !important;
+  border: 1px solid oklch(35% 0.025 265 / 0.25) !important;
+  border-radius: 8px !important;
+}
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+.skeleton {
+  background: linear-gradient(90deg,
+    oklch(18% 0.015 265) 25%,
+    oklch(24% 0.020 265) 50%,
+    oklch(18% 0.015 265) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+/* ─── Code Blocks ────────────────────────────────────────────────────────── */
+
+pre, code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+
+pre {
+  background: oklch(14% 0.015 265);
+  border: 1px solid oklch(28% 0.020 265);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+}
+
+/* ─── Focus Styles ───────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid oklch(58% 0.26 265);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Selection ──────────────────────────────────────────────────────────── */
+
+::selection {
+  background: oklch(58% 0.26 265 / 0.35);
+  color: white;
+}

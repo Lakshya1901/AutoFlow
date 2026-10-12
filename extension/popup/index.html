@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AutoFlow Recorder</title>
+  <style>
+    :root {
+      --brand: #6366f1;
+      --brand-hover: #4f46e5;
+      --bg: #0f1115;
+      --card: #16181d;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #1e293b;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+    
+    body {
+      width: 320px;
+      margin: 0;
+      padding: 16px;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    h1 {
+      font-size: 16px;
+      margin: 0 0 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin: 0 0 16px 0;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #38bdf8);
+      color: white;
+    }
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+
+    .status-active {
+      background: var(--danger);
+      box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+      animation: pulse 1.5s infinite;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .stat-label { color: var(--text-muted); }
+    .stat-value { font-weight: 600; }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: #0f1115;
+      color: white;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+    
+    label {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+      color: var(--text-muted);
+    }
+
+    .hidden { display: none !important; }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    .error {
+      color: var(--danger);
+      font-size: 12px;
+      margin-top: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="setup-view" class="hidden">
+    <h1>AutoFlow Setup</h1>
+    <p>Configure connection to your local backend.</p>
+    <div class="card">
+      <label>API URL</label>
+      <input type="text" id="api-url" value="http://localhost:8000" />
+      <button id="save-settings" class="btn btn-primary">Save Configuration</button>
+    </div>
+  </div>
+
+  <div id="idle-view" class="hidden">
+    <h1><span style="font-size:20px">⚡</span> AutoFlow</h1>
+    <p>Demonstrate a task once. AutoFlow handles it forever.</p>
+    
+    <div class="card">
+      <label>Recording Name (Optional)</label>
+      <input type="text" id="recording-name" placeholder="e.g. Download Invoices" />
+      <button id="start-btn" class="btn btn-primary">
+        <span class="status-indicator" style="background:white"></span>
+        Start Recording
+      </button>
+    </div>
+    <div id="start-error" class="error hidden"></div>
+  </div>
+
+  <div id="recording-view" class="hidden">
+    <h1>
+      <span class="status-indicator status-active"></span>
+      Recording Active
+    </h1>
+    <p>Perform your workflow normally. We're capturing the semantic intent.</p>
+
+    <div class="card">
+      <div class="stat-row">
+        <span class="stat-label">Session ID</span>
+        <span class="stat-value" id="session-id">...</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Events Captured</span>
+        <span class="stat-value" id="event-count">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Duration</span>
+        <span class="stat-value" id="duration">00:00</span>
+      </div>
+      
+      <button id="stop-btn" class="btn btn-danger" style="margin-top: 16px;">
+        Finish Recording
+      </button>
+    </div>
+    <div id="stop-error" class="error hidden"></div>
+  </div>
+
+  <div id="processing-view" class="hidden">
+    <div style="text-align:center; padding: 20px 0;">
+      <h2 style="font-size:16px; margin-bottom:8px">Processing...</h2>
+      <p>AutoFlow AI is analyzing your recording to extract the workflow intent.</p>
+    </div>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

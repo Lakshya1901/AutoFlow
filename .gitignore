@@ -1,0 +1,69 @@
+# ===========================
+# AutoFlow — Root .gitignore
+# ===========================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+*.egg
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.hypothesis/
+
+# uv
+.uv/
+
+# Node / Frontend / Extension
+node_modules/
+.pnpm-store/
+dist/
+build/
+.turbo/
+*.local
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Docker
+.docker/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite3
+
+# Alembic version backups
+alembic/versions/__pycache__/
+
+# Chrome Extension build
+extension/dist/
+extension/node_modules/
+
+# Playwright
+playwright-report/
+test-results/

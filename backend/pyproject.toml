@@ -1,0 +1,142 @@
+[project]
+name = "autoflow"
+version = "0.1.0"
+description = "AutoFlow — AI Workflow Recorder & Automation Platform"
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+authors = [{ name = "AutoFlow Team" }]
+
+dependencies = [
+    # ─── Web Framework ───────────────────────────────────
+    "fastapi[standard]>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "websockets>=13.1",
+
+    # ─── Database ────────────────────────────────────────
+    "sqlalchemy[asyncio]>=2.0.36",
+    "asyncpg>=0.30.0",
+    "alembic>=1.14.0",
+
+    # ─── Validation & Settings ───────────────────────────
+    "pydantic>=2.10.0",
+    "pydantic-settings>=2.6.0",
+    "python-dotenv>=1.0.1",
+
+    # ─── Task Queue ──────────────────────────────────────
+    "celery[redis]>=5.4.0",
+    "redis[hiredis]>=5.2.0",
+    "flower>=2.0.1",
+
+    # ─── HTTP Client (for LLM calls) ─────────────────────
+    "httpx>=0.27.0",
+    "tenacity>=9.0.0",
+
+    # ─── AI / Embeddings ─────────────────────────────────
+    "openai>=1.55.0",            # OpenAI-compatible SDK used for all providers
+
+    # ─── Browser Automation ──────────────────────────────
+    "playwright>=1.49.0",
+
+    # ─── Security ────────────────────────────────────────
+    "cryptography>=43.0.0",      # Fernet for credential encryption
+    "python-jose[cryptography]>=3.3.0",
+    "passlib[bcrypt]>=1.7.4",
+
+    # ─── Utilities ───────────────────────────────────────
+    "python-multipart>=0.0.12",  # File uploads
+    "aiofiles>=24.1.0",          # Async file I/O
+    "python-dateutil>=2.9.0",
+    "structlog>=24.4.0",         # Structured logging
+    "rich>=13.9.0",              # Pretty terminal output
+
+    # ─── Data Processing ─────────────────────────────────
+    "python-slugify>=8.0.4",
+    "jinja2>=3.1.4",             # Prompt templating
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "aiosqlite>=0.20.0",         # In-memory SQLite for tests
+    "pytest-cov>=6.0.0",
+    "httpx>=0.27.0",             # Test client
+    "factory-boy>=3.3.1",        # Test data factories
+    "ruff>=0.7.0",
+    "mypy>=1.13.0",
+    "types-python-dateutil>=2.9.0",
+    "types-passlib>=1.7.7",
+    "pre-commit>=4.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/autoflow"]
+
+# ─── Ruff Linting ────────────────────────────────────────
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "ARG", # flake8-unused-arguments
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+    "RUF", # ruff-specific rules
+]
+ignore = [
+    "B008", "B904", "E501",
+    "TC",                      # Pydantic/SQLAlchemy resolve annotations at runtime; TYPE_CHECKING imports break them
+    "UP042",                   # str+Enum kept deliberately: StrEnum changes str()/format() output
+    "RUF001", "RUF002", "RUF003",  # intentional unicode (arrows, dashes) in docs/log text
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ARG"]  # fakes mirror third-party signatures
+
+[tool.ruff.lint.isort]
+known-first-party = ["autoflow"]
+
+# ─── MyPy Type Checking ───────────────────────────────────
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+plugins = ["pydantic.mypy"]
+
+# ─── Pytest ───────────────────────────────────────────────
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--cov=autoflow --cov-report=term-missing --cov-report=html -v"
+
+[tool.coverage.run]
+source = ["src/autoflow"]
+omit = ["*/migrations/*", "*/tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
